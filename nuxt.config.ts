@@ -22,6 +22,11 @@ export default defineNuxtConfig({
       
     }, 
     documentDriven: true,
+    markdown: {
+      rehypePlugins: [],
+      remarkPlugins: [], 
+    },
+  
   },
 
   compatibilityDate: '2024-12-11',

@@ -56,24 +56,20 @@
               v-if="activeSection === 'getStarted'"
               class="mt-2 pl-4 space-y-2 text-sm text-gray-400"
             >
-              <li>
-                <NuxtLink
-                  to="/"
-                  class="hover:text-white"
-                  :class="{ 'text-green-500 font-semibold': $route.path === '/' }"
-                >
-                  Installation
-                </NuxtLink>
-              </li>
-              <li>
-                <NuxtLink
-                  to="/about"
-                  class="hover:text-white"
-                  :class="{ 'text-green-500 font-semibold': $route.path === '/about' }"
-                >
-                  Configuration
-                </NuxtLink>
-              </li>
+            <!--Navigation dynamique-->
+              <ContentNavigation v-slot="{ navigation }">
+                <ul>
+                  <li v-for="link of navigation" :key="link._path">
+                    <NuxtLink
+                      :to="link._path"
+                      class="hover:text-white"
+                      :class="{ 'text-green-500 font-semibold': $route.path === link._path }"
+                    >
+                    {{ link.title }}
+                    </NuxtLink>
+                  </li>
+                </ul>
+              </ContentNavigation>
             </ul>
           </div>
         </nav>
@@ -93,8 +89,8 @@
 
           <!-- Navigation Links (centrés) pour grand écran -->
           <nav class="hidden lg:flex space-x-4">
-            <NuxtLink to="/" class="hover:underline">Accueil</NuxtLink>
-            <NuxtLink to="/about" class="hover:underline">À propos</NuxtLink>
+            <NuxtLink to="/" class="hover:underline">Documentation</NuxtLink>
+            <NuxtLink to="/about" class="hover:underline">API</NuxtLink>
             <NuxtLink to="/contact" class="hover:underline">Contact</NuxtLink>
           </nav>
 
@@ -203,11 +199,15 @@
       <main class="flex-grow p-6 text-sm md:text-md">
         <ContentDoc />
       </main>
+
+      <!--Footer-->
     </div>
   </div>
 </template>
 
 <script>
+
+import Card from '~/components/content/Card.vue';
 
 export default {
   data() {
@@ -219,6 +219,9 @@ export default {
       searchQuery: "",
       suggestions: ["Accueil", "À propos", "Contact", "Services", "Portfolio"],
     };
+  },
+  components: {
+    Card,
   },
   computed: {
     filteredSuggestions() {
