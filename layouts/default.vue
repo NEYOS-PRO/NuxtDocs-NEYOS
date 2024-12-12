@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen grid grid-cols-12 bg-white dark:bg-neutral-900 text-gray-900 dark:text-white">
+  <div :class="{ dark: darkMode }" class="min-h-screen grid grid-cols-12 bg-white dark:bg-neutral-900 text-gray-900 dark:text-white">
     <!-- Sidebar gauche (sticky, toute la hauteur) -->
     <aside
       class="col-span-2 bg-neutral-800 text-white sticky top-0 h-screen overflow-y-auto hidden lg:block"
@@ -84,22 +84,18 @@
             <NuxtLink to="/contact" class="hover:underline">Contact</NuxtLink>
           </nav>
 
-          <!-- Barre de recherche et mode sombre -->
+          <!-- Barre de recherche, mode sombre et menu burger -->
           <div class="flex items-center space-x-4">
-            <!-- Barre de recherche -->
-            <div class="relative hidden lg:block">
-              <input
-                id="search"
-                type="text"
-                placeholder="Search..."
-                class="w-full bg-neutral-800 text-sm text-gray-300 rounded-lg pl-10 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <div class="absolute top-2 left-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                </svg>
-              </div>
-            </div>
+            <!-- Icône de recherche -->
+            <button
+              @click="toggleSearchPopup"
+              class="bg-neutral-800 text-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="Search"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+            </button>
 
             <!-- Mode sombre -->
             <button
@@ -138,9 +134,50 @@
                 />
               </svg>
             </button>
+
+            <!-- Menu hamburger pour mobile -->
+            <button
+              @click="toggleMenu"
+              class="bg-neutral-800 text-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 lg:hidden"
+              aria-label="Toggle menu"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 7.5h16.5m-16.5 7.5h16.5" />
+              </svg>
+            </button>
           </div>
         </div>
       </header>
+
+      <!-- Popup de recherche -->
+      <div v-if="searchPopupOpen" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white dark:bg-neutral-800 p-4 rounded-md w-4/5 max-w-lg">
+          <div class="flex justify-between items-center mb-4">
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Rechercher..."
+              class="w-full p-2 border rounded-md focus:outline-none"
+            />
+            <button @click="toggleSearchPopup" class="text-red-600">X</button>
+          </div>
+          <ul>
+            <li v-for="suggestion in filteredSuggestions" :key="suggestion">{{ suggestion }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Popup du menu hamburger -->
+      <div v-if="menuOpen" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white dark:bg-neutral-800 p-4 rounded-md w-4/5 max-w-lg">
+          <button @click="toggleMenu" class="text-red-600 mb-4">Fermer</button>
+          <nav>
+            <NuxtLink to="/" class="block mb-2">Accueil</NuxtLink>
+            <NuxtLink to="/about" class="block mb-2">À propos</NuxtLink>
+            <NuxtLink to="/contact" class="block mb-2">Contact</NuxtLink>
+          </nav>
+        </div>
+      </div>
 
       <!-- Bloc de contenu -->
       <main class="flex-grow p-6">
@@ -154,18 +191,32 @@
 export default {
   data() {
     return {
-      darkMode: false, // État du mode sombre
-      activeSection: null, // Section active dans la sidebar gauche
+      darkMode: false,
+      activeSection: null,
+      menuOpen: false,
+      searchPopupOpen: false,
+      searchQuery: "",
+      suggestions: ["Accueil", "À propos", "Contact", "Services", "Portfolio"],
     };
+  },
+  computed: {
+    filteredSuggestions() {
+      return this.suggestions.filter(suggestion =>
+        suggestion.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
   },
   methods: {
     toggleDarkMode() {
       this.darkMode = !this.darkMode;
-      if (this.darkMode) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+      const root = document.documentElement;
+      root.classList.toggle("dark", this.darkMode);
+    },
+    toggleMenu() {
+      this.menuOpen = !this.menuOpen;
+    },
+    toggleSearchPopup() {
+      this.searchPopupOpen = !this.searchPopupOpen;
     },
     toggleSection(section) {
       this.activeSection = this.activeSection === section ? null : section;
