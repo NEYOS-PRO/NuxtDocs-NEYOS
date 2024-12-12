@@ -18,8 +18,10 @@ export default defineNuxtConfig({
         'css',
         'javascript',
       ], 
-      theme: "github-dark"
-    }
+      theme: "github-dark", 
+      
+    }, 
+    documentDriven: true,
   },
 
   compatibilityDate: '2024-12-11',

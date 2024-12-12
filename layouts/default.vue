@@ -56,10 +56,24 @@
               v-if="activeSection === 'getStarted'"
               class="mt-2 pl-4 space-y-2 text-sm text-gray-400"
             >
-              <li><NuxtLink to="/" class="hover:text-white">Installation</NuxtLink></li>
-              <li><NuxtLink to="/about" class="hover:text-white">Configuration</NuxtLink></li>
-              <li><NuxtLink to="/edge-channel" class="hover:text-white">Edge Channel</NuxtLink></li>
-              <li><NuxtLink to="/migration" class="hover:text-white">Migration</NuxtLink></li>
+              <li>
+                <NuxtLink
+                  to="/"
+                  class="hover:text-white"
+                  :class="{ 'text-green-500 font-semibold': $route.path === '/' }"
+                >
+                  Installation
+                </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink
+                  to="/about"
+                  class="hover:text-white"
+                  :class="{ 'text-green-500 font-semibold': $route.path === '/about' }"
+                >
+                  Configuration
+                </NuxtLink>
+              </li>
             </ul>
           </div>
         </nav>
@@ -89,10 +103,10 @@
             <!-- Icône de recherche -->
             <button
               @click="toggleSearchPopup"
-              class="bg-neutral-800 text-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="bg-neutral-800 text-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               aria-label="Search"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
               </svg>
             </button>
@@ -100,7 +114,7 @@
             <!-- Mode sombre -->
             <button
               @click="toggleDarkMode"
-              class="bg-neutral-800 text-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="bg-neutral-800 text-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
               aria-label="Toggle dark mode"
             >
               <svg
@@ -110,7 +124,7 @@
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="h-6 w-6"
+                class="h-4 w-4"
               >
                 <path
                   stroke-linecap="round"
@@ -125,7 +139,7 @@
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="h-6 w-6"
+                class="h-4 w-4"
               >
                 <path
                   stroke-linecap="round"
@@ -138,10 +152,10 @@
             <!-- Menu hamburger pour mobile -->
             <button
               @click="toggleMenu"
-              class="bg-neutral-800 text-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 lg:hidden"
+              class="bg-neutral-800 text-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 lg:hidden"
               aria-label="Toggle menu"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 7.5h16.5m-16.5 7.5h16.5" />
               </svg>
             </button>
@@ -152,26 +166,32 @@
       <!-- Popup de recherche -->
       <div v-if="searchPopupOpen" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
         <div class="bg-white dark:bg-neutral-800 p-4 rounded-md w-4/5 max-w-lg">
-          <div class="flex justify-between items-center mb-4">
+          <div class="flex justify-between items-center mb-4 space-x-3">
             <input
               v-model="searchQuery"
               type="text"
               placeholder="Rechercher..."
-              class="w-full p-2 border rounded-md focus:outline-none"
+              class="w-full p-2 text-sm border rounded-md focus:outline-green-500 dark:focus:outline-green-500"
             />
-            <button @click="toggleSearchPopup" class="text-red-600">X</button>
+            <!-- <button  class="text-red-600">X</button> -->
+            <svg @click="toggleSearchPopup" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 stroke-red-500 cursor-pointer">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+
           </div>
           <ul>
-            <li v-for="suggestion in filteredSuggestions" :key="suggestion">{{ suggestion }}</li>
+            <li v-for="suggestion in filteredSuggestions" :key="suggestion">              
+              <span class="text-sm">{{ suggestion }}</span>
+            </li>
           </ul>
         </div>
       </div>
 
       <!-- Popup du menu hamburger -->
       <div v-if="menuOpen" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-        <div class="bg-white dark:bg-neutral-800 p-4 rounded-md w-4/5 max-w-lg">
+        <div class="bg-white dark:bg-neutral-800 p-4 rounded-md w-4/5 max-w-lg focus:outline-green-500">
           <button @click="toggleMenu" class="text-red-600 mb-4">Fermer</button>
-          <nav>
+          <nav class="text-sm">
             <NuxtLink to="/" class="block mb-2">Accueil</NuxtLink>
             <NuxtLink to="/about" class="block mb-2">À propos</NuxtLink>
             <NuxtLink to="/contact" class="block mb-2">Contact</NuxtLink>
@@ -180,7 +200,7 @@
       </div>
 
       <!-- Bloc de contenu -->
-      <main class="flex-grow p-6">
+      <main class="flex-grow p-6 text-sm md:text-md">
         <ContentDoc />
       </main>
     </div>
@@ -192,7 +212,7 @@ export default {
   data() {
     return {
       darkMode: false,
-      activeSection: null,
+      activeSection: "getStarted",
       menuOpen: false,
       searchPopupOpen: false,
       searchQuery: "",
