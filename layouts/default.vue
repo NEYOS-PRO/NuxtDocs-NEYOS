@@ -188,9 +188,19 @@
         <div class="bg-white dark:bg-neutral-800 p-4 rounded-md w-4/5 max-w-lg focus:outline-green-500">
           <button @click="toggleMenu" class="text-red-600 mb-4">Fermer</button>
           <nav class="text-sm">
-            <NuxtLink to="/" class="block mb-2">Accueil</NuxtLink>
-            <NuxtLink to="/about" class="block mb-2">À propos</NuxtLink>
-            <NuxtLink to="/contact" class="block mb-2">Contact</NuxtLink>
+              <ContentNavigation v-slot="{ navigation }">
+                  <ul>
+                    <li v-for="link of navigation" :key="link._path">
+                      <NuxtLink
+                        :to="link._path"
+                        class="hover:text-white"
+                        :class="{ 'text-green-500 font-semibold': $route.path === link._path }"
+                      >
+                      {{ link.title }}
+                      </NuxtLink>
+                    </li>
+                  </ul>
+                </ContentNavigation>
           </nav>
         </div>
       </div>

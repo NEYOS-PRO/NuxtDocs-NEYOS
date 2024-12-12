@@ -8,6 +8,9 @@ export default defineNuxtConfig({
   },
 
   content: {  
+    experimental: {
+      indexed: true
+    },
     // ...options
     highlight: {
       langs: [
