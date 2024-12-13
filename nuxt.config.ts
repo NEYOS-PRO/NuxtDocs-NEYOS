@@ -1,16 +1,33 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxt/content', '@nuxt/ui'],
-
+  modules: ['@nuxt/content', '@nuxt/ui','@nuxt/devtools'],
+  app: {
+    head: {
+      meta: [
+        {
+          property: 'og:image',
+          content: '/images/preview.png', // Chemin de l'image dans `public/`
+        },
+      ],
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: '/logo/logo_white.png', // Chemin du fichier favicon
+        },
+      ],
+    },
+  },
+  
   routeRules: {
     '/': { prerender: true }
   },
 
   content: {  
-    experimental: {
-      indexed: true
-    },
+    // experimental: {
+    //   indexed: true
+    // },
     // ...options
     highlight: {
       langs: [
