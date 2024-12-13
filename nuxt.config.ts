@@ -10,6 +10,10 @@ export default defineNuxtConfig({
           property: 'og:image',
           content: '/images/preview.png', // Chemin de l'image dans `public/`
         },
+          {
+            'http-equiv': 'Content-Security-Policy',
+            content: "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval';"
+          },
       ],
       link: [
         {
@@ -20,7 +24,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  
+
   routeRules: {
     '/': { prerender: true }
   },
