@@ -1,13 +1,12 @@
 ---
 title: Momo
 ---
-# Guide de Configuration
+
+# Guide de configuration
 
 # Nuxt Content
 
-
-
-----
+---
 
 ::accordion
 ::
