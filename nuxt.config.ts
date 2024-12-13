@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   extends: ['@nuxt/ui-pro'],
   devtools: { enabled: true },
-  modules: ['@nuxt/content', '@nuxt/ui','@nuxt/devtools'],
+  modules: ['@nuxt/content', '@nuxt/ui', '@nuxt/devtools', '@nuxthq/studio'],
   app: {
     head: {
       meta: [
