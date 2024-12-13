@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  extends: ['@nuxt/ui-pro'],
   devtools: { enabled: true },
   modules: ['@nuxt/content', '@nuxt/ui','@nuxt/devtools'],
   app: {
@@ -14,7 +15,7 @@ export default defineNuxtConfig({
         {
           rel: 'icon',
           type: 'image/x-icon',
-          href: '/logo/logo_white.png', // Chemin du fichier favicon
+          href: '/logo_white.png', // Chemin du fichier favicon
         },
       ],
     },
@@ -25,10 +26,7 @@ export default defineNuxtConfig({
   },
 
   content: {  
-    // experimental: {
-    //   indexed: true
-    // },
-    // ...options
+
     highlight: {
       langs: [
         'c',
@@ -49,5 +47,5 @@ export default defineNuxtConfig({
   
   },
 
-  compatibilityDate: '2024-12-11',
+  compatibilityDate: '2024-12-13',
 });
